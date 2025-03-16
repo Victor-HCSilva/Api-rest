@@ -1,0 +1,6 @@
+- token 
+d67113838a21471921d1d27b4c259cfad3de7b4c
+
+- obter novo token
+curl -X POST -H "Content-Type: application/json" -d '{"username": "victor", "password": 123}' http://127.0.0.1:8000/api-token-auth/
+
