@@ -1,7 +1,8 @@
 from django.db import models
 
+
 class User(models.Model):
-    nome = models.CharField(max_length=300 )
+    nome = models.CharField(max_length=300)
     idade = models.IntegerField()
     senha = models.CharField(max_length=30)
 

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
@@ -13,18 +14,20 @@ class UserViewSet(viewsets.ModelViewSet):
         """
         Retorna o serializer apropriado com base na ação.
         """
-        if self.action == 'list':
+        if self.action == "list":
             return serializer.UserListSerializer
         return serializer.UserDetailSerializer
 
     def get_permissions(self):
         """Define as classes de permissão para cada ação."""
-        if self.action == 'list':
+        if self.action == "list":
             permission_classes = [permissions.AllowAny]  # Qualquer um pode listar
-        elif self.action == 'create':
-            permission_classes = [permissions.IsAuthenticated] # Ou IsAuthenticated, se necessario
+        elif self.action == "create":
+            permission_classes = [
+                permissions.IsAuthenticated
+            ]  # Ou IsAuthenticated, se necessario
         else:
-            permission_classes = [permissions.IsAuthenticated] # Requer autenticação
+            permission_classes = [permissions.IsAuthenticated]  # Requer autenticação
         return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
