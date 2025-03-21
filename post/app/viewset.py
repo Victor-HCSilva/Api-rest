@@ -1,57 +1,28 @@
 from rest_framework import viewsets, permissions, status
-from . import serializer
-from .models import User,Tarefa 
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from .permissions import IsAdminUser, IsOwnerOrAdmin
+from .serializer import User, PasswordVerificationSerializer
+from django.contrib.auth import get_user_model
+from . import serializer
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    queryset = get_user_model().objects.all()
 
     def get_serializer_class(self):
         if self.action == "list":
             return serializer.UserListSerializer
-        return serializer.UserDetailSerializer
+        return serializer.UserListSerializer
 
     def get_permissions(self):
         if self.action == "list":
-            permission_classes = [permissions.AllowAny]
+            return [permissions.IsAuthenticated(), IsAdminUser()]
         elif self.action == "create":
-            permission_classes = [permissions.IsAuthenticated]
+            return [permissions.AllowAny()]
+        elif self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), IsOwnerOrAdmin()]
         else:
-            permission_classes = [permissions.IsAuthenticated]
-        return [permission() for permission in permission_classes]
+            return [permissions.IsAuthenticated()]
 
-    def perform_create(self, serializer):
-        serializer.save()
-
-    def perform_update(self, serializer):
-        serializer.save()
-
-    def perform_delete(self, instance):
-        instance.delete()
-
-class TarefaViewSet(viewsets.ModelViewSet):
-    queryset = Tarefa.objects.all()
-    permission_class = [permissions.AllowAny]
-
-    def get_serializer_class(self):
-        if self.action == "list":
-            return serializer.TarefaListSerializer
-        return serializer.TarefaDetailSerializer
-
-    def get_permissions(self):
-        permission_classes = [permissions.AllowAny]
-        return [permission() for permission in permission_classes]
-
-    def create(self, serializer):
-        serializer.save()
-
-    def update(self, serializer):
-        serializer.save()
-
-    def delete(self, instance):
-        instance.delete()
-
-    
 

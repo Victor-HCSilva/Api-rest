@@ -1,17 +1,10 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
-class User(models.Model):
-    nome = models.CharField(max_length=300, unique=True)
-    senha = models.CharField(max_length=129)
-    data_criacao = models.DateField( auto_now_add=True )
-
-    def save(self, *args, **kwargs):
-        if not self.pk or not check_password(self.senha, User.objects.get(pk=self.pk).senha):
-            self.senha = make_password(self.senha)
-        super().save(*args, **kwargs)
-
+class User(AbstractUser):
+    is_admin = models.BooleanField(default=False)
     def __srt__(self):
         return 
 
