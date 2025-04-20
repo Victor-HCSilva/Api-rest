@@ -1,3 +1,9 @@
+
+**Para rodar projeto**
+```bash
+fastapi dev main.py
+```
+
 **1. Importações:**
 
 ```python
