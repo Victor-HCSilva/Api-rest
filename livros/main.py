@@ -11,7 +11,7 @@ app = FastAPI()
 @app.get("/api/")
 async def get_book(book_id):
     book = db.DataBase(
-        host="localhost", database="library", user="root", password="V1ct0r_Hug@"
+        host="localhost", database="library", user="root", password="password"
     )
     book.create_table()
     return book.get_book(book_id)
@@ -19,7 +19,7 @@ async def get_book(book_id):
 @app.get("/api/all")
 async def list_all():
     books = db.DataBase(
-        host="localhost", database="library", user="root", password="V1ct0r_Hug@"
+        host="localhost", database="library", user="root", password="password"
     )
     books.create_table()
     return books.list_all()
@@ -45,7 +45,7 @@ async def new_book(name: str, author: str, age: str, gender: str):
             return f"{v}"
 
     new_book = db.DataBase(
-        host="localhost", database="library", user="root", password="V1ct0r_Hug@"
+        host="localhost", database="library", user="root", password="password"
     )
     new_book.create_table()
     new_book.add_new_book(name=name, author=author, age=age, gender=gender)
@@ -53,7 +53,7 @@ async def new_book(name: str, author: str, age: str, gender: str):
 @app.put("/api/update")
 async def update(name: str, author: str, age: str, gender: str, book_id: str):
     new_book = db.DataBase(
-        host="localhost", database="library", user="root", password="V1ct0r_Hug@"
+        host="localhost", database="library", user="root", password="password"
     )
     new_book.create_table()
     new_book.update_info(
@@ -63,6 +63,6 @@ async def update(name: str, author: str, age: str, gender: str, book_id: str):
 @app.delete("/api/delete")
 async def remove(book_id):
     book = db.DataBase(
-        host="localhost", database="library", user="root", password="V1ct0r_Hug@"
+        host="localhost", database="library", user="root", password="password"
     )
     return book.remove_book(book_id)
