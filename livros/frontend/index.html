@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livros Disponíveis (Dados Brutos)</title>
+  <style>
+    /* Estilos CSS */
+    body {background: rgb(0,0,0); font-family: sans-serif; }
+    .livros-list ul { list-style: none; padding: 0; }
+    /* Estilo para melhor visualização do JSON */
+    .livros-list li {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      padding: 10px;
+        color: green;
+      font-family: monospace; /* Fonte monoespaçada para código/JSON */
+      white-space: pre-wrap;   /* Mantém espaços e quebra linhas longas */
+      word-break: break-all;   /* Quebra palavras/strings longas se necessário */
+    }
+    .error { color: red; font-weight: bold; }
+    .loading { color: blue; }
+    h1{
+      color: white;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Livros Magníficos </h1>
+    <div class="livros-list">
+        <p class="loading">Carregando livros...</p> <!-- Mensagem inicial -->
+    </div>
+
+<script>
+    // Seleciona o container
+    const livrosListDiv = document.querySelector(".livros-list");
+
+    fetch('http://127.0.0.1:8000/api/all') // URL da API
+      .then(response => {
+        if (!response.ok) {
+          // Tenta obter texto do erro para mais detalhes, se houver
+          return response.text().then(text => {
+             throw new Error(`Erro HTTP: ${response.status} ${response.statusText} - ${text.substring(0, 200)}`);
+          });
+        }
+        return response.json(); // Converte a resposta para JSON
+      })
+      .then(data => {
+        console.log('Dados recebidos:', data);
+
+        // Limpa a mensagem de "Carregando..."
+        livrosListDiv.innerHTML = '';
+
+        // Verifica se 'data' é um array e não está vazio
+        if (Array.isArray(data) && data.length > 0) {
+          // Cria uma lista não ordenada para os livros
+          const ul = document.createElement('ul');
+
+          // Itera sobre cada objeto 'livro' recebido na 'data'
+          data.forEach(livro => {
+            const li = document.createElement('li');
+
+            // --- MUDANÇA PRINCIPAL ---
+            // Converte o objeto 'livro' inteiro para uma string JSON formatada
+            // Use JSON.stringify(livro) para uma string compacta, sem indentação
+            // Use JSON.stringify(livro, null, 2) para indentação com 2 espaços (melhor leitura)
+            const livroJsonString = JSON.stringify(livro, null, 2); // Com indentação
+
+            // Define o conteúdo do item da lista como a string JSON
+            // Usar textContent é mais seguro que innerHTML aqui
+            li.textContent = livroJsonString;
+            // --- FIM DA MUDANÇA ---
+
+            // Adiciona o item da lista (li) à lista (ul)
+            ul.appendChild(li);
+          });
+
+          // Adiciona a lista completa (ul) ao container (div)
+          livrosListDiv.appendChild(ul);
+
+        } else if (data && typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0) {
+            // Caso a API retorne um objeto vazio {}
+            livrosListDiv.innerHTML = '<p>Nenhum livro encontrado (resposta vazia).</p>';
+        } else if (data && typeof data === 'object') {
+            // Caso a API retorne um objeto único em vez de um array
+             livrosListDiv.innerHTML = `<p>Formato de dados inesperado (objeto único):</p><pre>${JSON.stringify(data, null, 2)}</pre>`;
+             console.log("Recebido objeto único:", data);
+        }
+         else {
+          // Caso a API retorne um array vazio [] ou algo que não seja um array interpretável
+          livrosListDiv.innerHTML = '<p>Nenhum livro encontrado ou formato de dados inválido.</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Ocorreu um erro ao buscar os livros:', error);
+        // Exibe uma mensagem de erro clara para o usuário
+        // Usar <pre> pode ajudar a formatar a mensagem de erro se ela for longa
+        livrosListDiv.innerHTML = `<p class="error">Não foi possível carregar os livros.</p><pre class="error">${error.message}</pre>`;
+      });
+
+  </script>
+</body>
+</html>
