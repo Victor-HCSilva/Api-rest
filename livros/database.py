@@ -9,7 +9,7 @@ sys.path.insert(0, path_abs)
 
 class DataBase:
     tableName = "booksdb"
-
+    databaseName = "library"
     def __init__(self, host, database, user, password):
         self.conn = mysql.connector.connect(
             host=host,
@@ -23,12 +23,21 @@ class DataBase:
 
     def create_table(self):
         self.cursor.execute(
-            f"""CREATE TABLE IF NOT EXISTS {self.tableName}(
+            f"""
+                CREATE DATABASE IF NOT EXISTS {self.databaseName}  -- Adicionar IF NOT EXISTS é uma boa prática aqui também
+                CHARACTER SET utf8mb4
+                COLLATE utf8mb4_unicode_ci;
+
+                USE {self.databaseName};
+
+                CREATE TABLE IF NOT EXISTS {self.tableName}(
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(400),
                 author VARCHAR(400),
                 age INT,
-                gender VARCHAR(100))"""
+                gender VARCHAR(100)
+            );
+                """
         )
         self.conn.commit()
 
@@ -72,4 +81,7 @@ class DataBase:
         print("Conexao encerrada")
 
 if __name__ == "__main__":
-    ...
+    data = DataBase(
+        host="localhost", database="library", user="root", password="senha"
+    )
+    data.create_table()

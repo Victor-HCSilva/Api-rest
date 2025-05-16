@@ -1,4 +1,9 @@
 
+- Crie a database library
+```bash
+CREATE DATABASE library;
+```
+- Faça python database.py (com suas configurações)
 **Para rodar projeto**
 ```bash
 fastapi dev main.py
