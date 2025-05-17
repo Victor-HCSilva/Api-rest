@@ -74,7 +74,7 @@ async def new_book(name: str, author: str, age: int, gender: str):
        host=os.getenv("HOST_NAME"), database="library", user=os.getenv("USER_NAME"), password=os.getenv("PASSWORD")
     )
 
-    new_book.create_table()
+    #new_book.create_table()
     new_book.add_new_book(name=name, author=author, age=age, gender=gender)
     book_format ={"name":name, "author": author, "age":age, "gender":gender}
 

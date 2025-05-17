@@ -1,4 +1,4 @@
-#!/home/victor/main/api/livros_DRF/.venv/bin/python3
+#!/home/victor/main/Api-rest/livros_DRF/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
