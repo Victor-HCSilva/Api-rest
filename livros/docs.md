@@ -19,10 +19,7 @@
     COLLATE utf8mb4_unicode_ci;
 
     USE {self.databaseName};
-
-    CREATE TABLE IF NOT EXISTS {self.tableName}(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(400),
+CREATE TABLE IF NOT EXISTS {self.tableName}( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(400),
     author VARCHAR(400),
     age INT,
     gender VARCHAR(100)
@@ -101,7 +98,7 @@ está contido em algumas validações básicas (url: http://127.0.0.1:8000/api/)
          - Parâmetro:
             - Sem parâmetro
         - Retorno:
-            - Lista de listas
+            - Dicionário Python
 
 ![alt text for screen readers](img/get_all.png)
 - Função `new_book` | Método POST | `/api/post`

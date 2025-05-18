@@ -5,7 +5,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,     # Para usar o refresh token e obter um novo access token
     TokenVerifyView,      # (Opcional) Para verificar se um token é válido
 )
+from . import views
 urlpatterns = [
+    path('', views.home_or_login_view, name='home'), # Ou o nome que você usa para a página de login
+    path('logout/', views.logout_view, name='logout'),
+    path('main/<int:id_user>/', views.main, name='main'),
     path(
         "users/",
         viewset.UserViewSet.as_view({"get": "list", "post": "create"}),

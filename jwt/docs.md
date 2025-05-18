@@ -1,5 +1,7 @@
 **Resumo**
 
+- MVC: `Model View Controler`
+
 *   **GET /users/:**  **PÚBLICO** - Lista usuários (sem senha).
 *   **POST /users/:**  **PRIVADO (Autenticado)** - Criar um novo usuário.
 *   **GET /users/{pk}/:** **PRIVADO (Autenticado)** - Detalhes de um usuário específico (sem senha na resposta).

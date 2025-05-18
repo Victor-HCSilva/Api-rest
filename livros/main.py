@@ -46,7 +46,9 @@ async def list_all():
     books = db.DataBase(
         host=os.getenv("HOST_NAME"), database="library", user=os.getenv("USER_NAME"), password=os.getenv("PASSWORD")
     )
-    return books.list_all()
+
+    return { "books":books.list_all()}
+
 
 @app.post("/api/post")
 async def new_book(name: str, author: str, age: int, gender: str):
