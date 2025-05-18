@@ -1,2 +1,0 @@
- - Deve-se analisar este formato robusto de criação de api, mas este não está com validações
- de permissão, mas o CRUDE funciona.

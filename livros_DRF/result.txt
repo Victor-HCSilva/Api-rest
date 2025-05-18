@@ -1,6 +1,0 @@
-
---- Testando POST /books/ ---
-
---- Testando GET /books/ ---
-
---- Testando GET /books/dccdaba1-297d-43ee-bcc6-2ca7e79edbe4/ (não existente) ---
