@@ -41,7 +41,8 @@ def _set_auth_cookies(response, access_token, refresh_token=None):
         )
 
 
-def home_or_login_view(request): # Renomeei para clareza, pode ser sua view 'home'
+def home_or_login_view(request):
+    form = UserForm()
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -62,12 +63,13 @@ def home_or_login_view(request): # Renomeei para clareza, pode ser sua view 'hom
                 messages.error(request, 'Esta conta está desativada.')
         else:
             messages.error(request, 'Nome do usuário ou senha inválidos!')
+            print(form.errors)
 
     form = UserForm()
     return render(request, "index.html", {"form": form})
 
 
-@jwt_cookie_required # Use o novo decorator
+@jwt_cookie_required
 def main(request, id_user):
     usuarios = User.objects.all()
     user = get_object_or_404(User, id=id_user)
@@ -90,7 +92,6 @@ def logout_view(request):
     if refresh_token_value:
         pass
 
-    # Deletar os cookies de autenticação
     response.delete_cookie(ACCESS_TOKEN_COOKIE_NAME)
     response.delete_cookie(REFRESH_TOKEN_COOKIE_NAME, path=settings.SIMPLE_JWT.get('AUTH_COOKIE_REFRESH_PATH', '/api/token/refresh/')) # Certifique-se que o path corresponde ao usado no set_cookie
 
